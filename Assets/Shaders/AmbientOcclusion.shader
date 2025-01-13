@@ -1,4 +1,4 @@
-Shader "Hidden/FinalComposite"
+Shader "Hidden/AmbientOcclusion"
 {
     Properties
     {
@@ -40,15 +40,31 @@ Shader "Hidden/FinalComposite"
             sampler2D _GAlbedo;
             sampler2D _GNormal;
             sampler2D _GPosition;
-            
-            sampler2D _AmbientOcclusion;
+            float _SSAOKernel[300];
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 ssao = tex2D(_AmbientOcclusion, i.uv).rgb;
-                return float4(ssao, 1);
-                /*
-                */
+                //tmp
+                int index = 1;
+                float3 kernelTest = float3(_SSAOKernel[index * 3], _SSAOKernel[index * 3 + 1], _SSAOKernel[index * 3 + 2]);
+                return float4(kernelTest, 1);
+
+                
+                if(i.uv.x < 0.3333)
+                {
+                    fixed3 albedo = tex2D(_GAlbedo, i.uv);
+                    return fixed4(albedo, 1);
+                }
+                else if(i.uv.x < 0.6667)
+                {
+                    fixed3 norm = tex2D(_GNormal, i.uv);
+                    return fixed4(norm, 1);
+                }
+                else
+                {
+                    fixed3 pos = tex2D(_GPosition, i.uv);
+                    return fixed4(pos, 1);
+                }
             }
             ENDCG
         }
