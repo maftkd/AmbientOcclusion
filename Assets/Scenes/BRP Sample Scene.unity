@@ -559,8 +559,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finalComposite: {fileID: 4800000, guid: 0cf6e18f75e9a451ba48a12bdd5b0302, type: 3}
   ambientOcclusionShader: {fileID: 4800000, guid: e56e39b1869284ae8b3c944417928167, type: 3}
-  radius: 1.5
+  blurShader: {fileID: 4800000, guid: bb1ff5673b9f04dd2a435f67fb310c3d, type: 3}
+  radius: 0.8
   bias: 0.025
+  blurRadius: 2
 --- !u!114 &354915521
 MonoBehaviour:
   m_ObjectHideFlags: 0

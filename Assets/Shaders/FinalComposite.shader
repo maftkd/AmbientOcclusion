@@ -45,10 +45,8 @@ Shader "Hidden/FinalComposite"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 ssao = tex2D(_AmbientOcclusion, i.uv).rgb;
-                return float4(ssao, 1);
-                /*
-                */
+                float ssao = tex2D(_AmbientOcclusion, i.uv).r;
+                return ssao;
             }
             ENDCG
         }
