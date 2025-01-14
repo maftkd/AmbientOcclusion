@@ -44,6 +44,8 @@ Shader "Hidden/AmbientOcclusion"
             float _Radius;
             float _Bias;
             float4x4 _ProjectionMatrix;
+            sampler2D _SSAORotations;
+            fixed4 _SSAORotations_TexelSize;
 
             fixed4 frag (v2f IN) : SV_Target
             {
@@ -52,32 +54,28 @@ Shader "Hidden/AmbientOcclusion"
                 //return float4(normal, 1);
                 float myDepth = myPos.z;
 
-                float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
-                if(dot(tangent, tangent) < 0.1)
-                {
-                    tangent = normalize(cross(normal, float3(0, 0, 1)));
-                    //return 1;
-                }
-                //return float4((tangent), 1);
+                float2 noiseCoords = IN.uv * (_ScreenParams.xy / _SSAORotations_TexelSize.zw);
+                float3 randomRotation = 0;
+                randomRotation.xy = tex2D(_SSAORotations, noiseCoords).rg * 2.0 - 1.0;
+                
+                float3 tangent   = normalize(randomRotation - normal * dot(randomRotation, normal));
                 //float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
-                //float3 tangent   = normalize(0 - normal * dot(0, normal));
                 float3 bitangent = normalize(cross(normal, tangent));
-                //return float4(bitangent, 1);
                 float3x3 TBN = float3x3(tangent, bitangent, normal);
                 
                 float occlusion = 0;
                 float4 coords = 0;
-                float nonHemisphere = 0;
+                //float nonHemisphere = 0;
                 float useableRays = 0;
                 for(int i = 0; i < 64; i++)
                 {
                     float3 rayDir = _SSAOKernel[i];
                     //return float4(rayDir, 1);
                     rayDir = mul(TBN, rayDir);
-                    if(dot(rayDir, normal) <= 0)
+                    if(dot(rayDir, normal) <= 0.01)
                     {
-                        nonHemisphere+=-dot(rayDir, normal);
-                        rayDir *= -1;
+                        //nonHemisphere+=-dot(rayDir, normal);
+                        //rayDir *= -1;
                         continue;
                     }
                     float3 samplePos = myPos + rayDir * _Radius;
@@ -87,6 +85,10 @@ Shader "Hidden/AmbientOcclusion"
                     coords = mul(_ProjectionMatrix, coords);
                     coords.xyz /= coords.w;
                     coords.xy = coords.xy * 0.5 + 0.5;
+                    if(coords.x < 0 || coords.x > 1 || coords.y < 0 || coords.y > 1)
+                    {
+                        continue;
+                    }
 
                     float sampleDepth = tex2D(_GPosition, coords.xy).z;
 
@@ -96,6 +98,7 @@ Shader "Hidden/AmbientOcclusion"
                     useableRays++;
                 }
 
+                //return useableRays / 64;
                 //nonHemisphere /= 64;
                 //return nonHemisphere;
                 if(useableRays > 0)

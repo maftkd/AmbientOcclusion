@@ -18,6 +18,7 @@ public class AmbientOcclusion : MonoBehaviour
     void Start()
     {
         GenerateKernel();
+        GenerateRandomRotations();
     }
 
     void GenerateKernel()
@@ -35,6 +36,23 @@ public class AmbientOcclusion : MonoBehaviour
             samples[i] = new Vector4(sample.x, sample.y, sample.z, 0);
         }
         Shader.SetGlobalVectorArray("_SSAOKernel", samples);
+    }
+    
+    void GenerateRandomRotations()
+    {
+        int numRotations = 16;
+        //Vector4[] rotations = new Vector4[numRotations];
+        Texture2D rotations = new Texture2D(4, 4, TextureFormat.RGFloat, false);
+        rotations.wrapMode = TextureWrapMode.Repeat;
+        
+        for (int i = 0; i < numRotations; i++)
+        {
+            Vector2 rotation = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+            rotation.Normalize();
+            rotations.SetPixel(i % 4, i / 4, new Color(rotation.x, rotation.y, 0, 0));
+        }
+        rotations.Apply();
+        Shader.SetGlobalTexture("_SSAORotations", rotations);
     }
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
