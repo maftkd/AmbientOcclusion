@@ -49,7 +49,7 @@ public class RenderPipelineManager : MonoBehaviour
         _normal.wrapMode = TextureWrapMode.Clamp;
         Shader.SetGlobalTexture("_GNormal", _normal);
         
-        _position = new RenderTexture(_prevWidth, _prevHeight, 0, RenderTextureFormat.ARGBHalf);
+        _position = new RenderTexture(_prevWidth, _prevHeight, 0, RenderTextureFormat.ARGBFloat);
         _position.wrapMode = TextureWrapMode.Clamp;
         Shader.SetGlobalTexture("_GPosition", _position);
         
