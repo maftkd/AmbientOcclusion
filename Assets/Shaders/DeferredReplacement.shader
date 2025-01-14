@@ -51,13 +51,7 @@ Shader "Unlit/DeferredReplacement"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                //convert normal in local space to tangent space
-                //o.normal 
-                //convert local normal to view normal
-                //o.normal
                 o.normal = normalize(mul((float3x3)UNITY_MATRIX_MV, v.normal));
-                
-                //o.normal = v.normal;
                 o.viewPos = UnityObjectToViewPos(v.vertex);
                 return o;
             }

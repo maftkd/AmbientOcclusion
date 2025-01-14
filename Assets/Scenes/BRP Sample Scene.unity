@@ -559,6 +559,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finalComposite: {fileID: 4800000, guid: 0cf6e18f75e9a451ba48a12bdd5b0302, type: 3}
   ambientOcclusionShader: {fileID: 4800000, guid: e56e39b1869284ae8b3c944417928167, type: 3}
+  radius: 0.5
+  bias: 0.025
 --- !u!114 &354915521
 MonoBehaviour:
   m_ObjectHideFlags: 0

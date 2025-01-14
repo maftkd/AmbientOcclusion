@@ -8,6 +8,12 @@ public class AmbientOcclusion : MonoBehaviour
     public Shader ambientOcclusionShader;
     private Material _ambientOcclusionMat;
 
+    [Range(0, 1)]
+    public float radius;
+    
+    [Range(0, 1f)]
+    public float bias;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,14 +23,13 @@ public class AmbientOcclusion : MonoBehaviour
     void GenerateKernel()
     {
         int numSamples = 64;
-        float[] sampleData = new float[numSamples * 3];
+        Vector4[] samples = new Vector4[numSamples];
+        //float[] sampleData = new float[numSamples * 3];
         for (int i = 0; i < numSamples; i++)
         {
-            sampleData[i * 3] = Random.Range(-1.0f, 1.0f);
-            sampleData[i * 3 + 1] = Random.Range(-1.0f, 1.0f);
-            sampleData[i * 3 + 2] = Random.Range(0.0f, 1.0f);
+            samples[i] = new Vector4(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f), 0);
         }
-        Shader.SetGlobalFloatArray("_SSAOKernel", sampleData);
+        Shader.SetGlobalVectorArray("_SSAOKernel", samples);
     }
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
@@ -37,6 +42,9 @@ public class AmbientOcclusion : MonoBehaviour
         {
             _ambientOcclusionMat = new Material(ambientOcclusionShader);
         }
+        
+        _ambientOcclusionMat.SetFloat("_Radius", radius);
+        _ambientOcclusionMat.SetFloat("_Bias", bias);
 
         //tmp - in final this only needs one channel
         RenderTexture ambientOcclusion = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.ARGBHalf);
