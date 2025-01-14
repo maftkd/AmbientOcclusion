@@ -46,6 +46,7 @@ Shader "Unlit/DeferredReplacement"
             float4 _MainTex_ST;
             float4 _Color;
 
+            
             v2f vert (appdata v)
             {
                 v2f o;
