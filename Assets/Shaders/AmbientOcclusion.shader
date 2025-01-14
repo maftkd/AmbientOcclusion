@@ -48,20 +48,44 @@ Shader "Hidden/AmbientOcclusion"
             fixed4 frag (v2f IN) : SV_Target
             {
                 float3 myPos = tex2D(_GPosition, IN.uv).rgb;
-                float3 normal = tex2D(_GNormal, IN.uv).rgb;
+                float3 normal = normalize(tex2D(_GNormal, IN.uv).rgb);
+                //return float4(normal, 1);
                 float myDepth = myPos.z;
 
-                float3 tangent = cross(normal, float3(0, 1, 0));
+                float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
+                if(dot(tangent, tangent) < 0.1)
+                {
+                    //tangent = normalize(cross(normal, float3(0, 0, 1)));
+                    //return 1;
+                }
+                //return float4(-(tangent), 1);
+                //float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
                 //float3 tangent   = normalize(0 - normal * dot(0, normal));
-                float3 bitangent = cross(normal, tangent);
+                float3 bitangent = normalize(cross(normal, tangent));
+                //return float4(bitangent, 1);
                 float3x3 TBN = float3x3(tangent, bitangent, normal);
                 
                 float occlusion = 0;
                 float4 coords = 0;
+                float nonHemisphere = 0;
                 for(int i = 0; i < 64; i++)
                 {
                     float3 rayDir = _SSAOKernel[i];
+                    if(length(rayDir > 1.01))
+                    {
+                        return float4(1,0,1,1);
+                    }
+                    if(dot(rayDir, float3(0,0,1)) <= -0.5)
+                    {
+                        return float4(1,0,0,1);
+                    }
+                    //return float4(rayDir, 1);
                     rayDir = mul(TBN, rayDir);
+                    if(dot(rayDir, normal) <= 0)
+                    {
+                        nonHemisphere+=-dot(rayDir, normal);
+                        rayDir *= -1;
+                    }
                     float3 samplePos = myPos + rayDir * _Radius;
 
                     //convert from view space back to a uv coordinate we can use to resample the position
@@ -72,11 +96,15 @@ Shader "Hidden/AmbientOcclusion"
 
                     float sampleDepth = tex2D(_GPosition, coords.xy).z;
 
-                    occlusion += sampleDepth >= myDepth + _Bias ? 1 : 0;
+                    float rangeCheck = smoothstep(0.0, 1.0, _Radius / abs(myDepth - sampleDepth));
+                    //float rangeCheck = 1;
+                    occlusion += (sampleDepth >= myDepth + _Bias ? 1 : 0) * rangeCheck;
                 }
 
+                nonHemisphere /= 64;
+                return nonHemisphere;
                 occlusion = occlusion / 64;
-                return occlusion;
+                return 1-occlusion;
                 //return -occlusion * 0.01;
                 
                 /*

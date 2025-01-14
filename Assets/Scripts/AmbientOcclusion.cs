@@ -27,7 +27,12 @@ public class AmbientOcclusion : MonoBehaviour
         //float[] sampleData = new float[numSamples * 3];
         for (int i = 0; i < numSamples; i++)
         {
-            samples[i] = new Vector4(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f), 0);
+            Vector3 sample = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f));
+            //sample = sample.normalized * Random.Range(0, 1f);
+            float scale = (float)i / numSamples;
+            scale = Mathf.Lerp(0.1f, 1.0f, scale * scale);
+            //sample *= scale;
+            samples[i] = new Vector4(sample.x, sample.y, sample.z, 0);
         }
         Shader.SetGlobalVectorArray("_SSAOKernel", samples);
     }
