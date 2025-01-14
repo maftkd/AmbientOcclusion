@@ -55,10 +55,10 @@ Shader "Hidden/AmbientOcclusion"
                 float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
                 if(dot(tangent, tangent) < 0.1)
                 {
-                    //tangent = normalize(cross(normal, float3(0, 0, 1)));
+                    tangent = normalize(cross(normal, float3(0, 0, 1)));
                     //return 1;
                 }
-                //return float4(-(tangent), 1);
+                //return float4((tangent), 1);
                 //float3 tangent = normalize(cross(normal, float3(0, 1, 0)));
                 //float3 tangent   = normalize(0 - normal * dot(0, normal));
                 float3 bitangent = normalize(cross(normal, tangent));
@@ -68,23 +68,17 @@ Shader "Hidden/AmbientOcclusion"
                 float occlusion = 0;
                 float4 coords = 0;
                 float nonHemisphere = 0;
+                float useableRays = 0;
                 for(int i = 0; i < 64; i++)
                 {
                     float3 rayDir = _SSAOKernel[i];
-                    if(length(rayDir > 1.01))
-                    {
-                        return float4(1,0,1,1);
-                    }
-                    if(dot(rayDir, float3(0,0,1)) <= -0.5)
-                    {
-                        return float4(1,0,0,1);
-                    }
                     //return float4(rayDir, 1);
                     rayDir = mul(TBN, rayDir);
                     if(dot(rayDir, normal) <= 0)
                     {
                         nonHemisphere+=-dot(rayDir, normal);
                         rayDir *= -1;
+                        continue;
                     }
                     float3 samplePos = myPos + rayDir * _Radius;
 
@@ -99,11 +93,15 @@ Shader "Hidden/AmbientOcclusion"
                     float rangeCheck = smoothstep(0.0, 1.0, _Radius / abs(myDepth - sampleDepth));
                     //float rangeCheck = 1;
                     occlusion += (sampleDepth >= myDepth + _Bias ? 1 : 0) * rangeCheck;
+                    useableRays++;
                 }
 
-                nonHemisphere /= 64;
-                return nonHemisphere;
-                occlusion = occlusion / 64;
+                //nonHemisphere /= 64;
+                //return nonHemisphere;
+                if(useableRays > 0)
+                {
+                    occlusion = occlusion / useableRays;
+                }
                 return 1-occlusion;
                 //return -occlusion * 0.01;
                 

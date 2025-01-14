@@ -8,7 +8,7 @@ public class AmbientOcclusion : MonoBehaviour
     public Shader ambientOcclusionShader;
     private Material _ambientOcclusionMat;
 
-    [Range(0, 1)]
+    [Range(0, 2)]
     public float radius;
     
     [Range(0, 1f)]
@@ -28,10 +28,10 @@ public class AmbientOcclusion : MonoBehaviour
         for (int i = 0; i < numSamples; i++)
         {
             Vector3 sample = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f));
-            //sample = sample.normalized * Random.Range(0, 1f);
+            sample = sample.normalized * Random.Range(0, 1f);
             float scale = (float)i / numSamples;
             scale = Mathf.Lerp(0.1f, 1.0f, scale * scale);
-            //sample *= scale;
+            sample *= scale;
             samples[i] = new Vector4(sample.x, sample.y, sample.z, 0);
         }
         Shader.SetGlobalVectorArray("_SSAOKernel", samples);
