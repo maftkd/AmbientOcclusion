@@ -64,12 +64,12 @@ Shader "Unlit/DeferredReplacement"
             {
                 fragmentOutput o;
                 float receivedShadow = 1 - UNITY_SHADOW_ATTENUATION(i, i.worldPos);
-                receivedShadow *= 0.2;
+                //receivedShadow *= 0.2;
                 if(i.worldPos.y < 0.01)
                 {
                     //_Color = float4(1, 0, 0, 1);
                 }
-                o.albedo = _Color * (1 - receivedShadow);
+                o.albedo = lerp(_Color, float4(0.9, 0.9, 1.0, 1.0) * _Color * 0.8,receivedShadow);
                 o.normal = float4(i.normal, 1.0);
                 o.position = float4(i.viewPos, 1.0);
                 return o;

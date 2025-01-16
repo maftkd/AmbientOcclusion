@@ -85,18 +85,19 @@ public class AmbientOcclusion : MonoBehaviour
         {
             if (_blur != null)
             {
-                RenderTexture.ReleaseTemporary(_blur);
+                _blur.Release();
             }
-            _blur = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
+            _blur = new RenderTexture(dest.width, dest.height, 0, RenderTextureFormat.R8);
+            
         }
         
         if(_ambientOcclusion == null || _ambientOcclusion.width != dest.width || _ambientOcclusion.height != dest.height)
         {
             if (_ambientOcclusion != null)
             {
-                RenderTexture.ReleaseTemporary(_ambientOcclusion);
+                _ambientOcclusion.Release();
             }
-            _ambientOcclusion = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
+            _ambientOcclusion = new RenderTexture(dest.width, dest.height, 0, RenderTextureFormat.R8);
         }
         
         _ambientOcclusionMat.SetFloat("_Radius", radius);

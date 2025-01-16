@@ -24,9 +24,9 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -702,6 +702,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7367604120152338647, guid: 16c4aff8b3513c24c9462cbf6a2f8ee7, type: 3}
     - {fileID: 2501491141390978648, guid: 16c4aff8b3513c24c9462cbf6a2f8ee7, type: 3}
+    - {fileID: 3658795480013066688, guid: 16c4aff8b3513c24c9462cbf6a2f8ee7, type: 3}
+    - {fileID: 5552129962038576847, guid: 16c4aff8b3513c24c9462cbf6a2f8ee7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 16c4aff8b3513c24c9462cbf6a2f8ee7, type: 3}
 --- !u!4 &408813356 stripped
 Transform:
@@ -1431,6 +1433,10 @@ PrefabInstance:
       propertyPath: m_BounceIntensity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1853094968961178454, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
       propertyPath: m_Name
       value: Floor
@@ -1439,7 +1445,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -1853094968961178454, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
+    - {fileID: -6722085885383957590, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
 --- !u!1 &1338741815 stripped
 GameObject:
@@ -1460,22 +1468,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6281424698479989189, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
---- !u!54 &1338741817
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338741815}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!4 &1338741818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b9c5987b2cfe134e9df32a06a230794, type: 3}
@@ -1611,6 +1603,7 @@ PrefabInstance:
     - {fileID: 5335829593291823444, guid: 4343c522f48efe0438dca65d10544789, type: 3}
     - {fileID: 2870279149892054574, guid: 4343c522f48efe0438dca65d10544789, type: 3}
     - {fileID: 7793814302013756750, guid: 4343c522f48efe0438dca65d10544789, type: 3}
+    - {fileID: 2175420066817623974, guid: 4343c522f48efe0438dca65d10544789, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4343c522f48efe0438dca65d10544789, type: 3}
 --- !u!4 &1389856477 stripped
 Transform:
@@ -1861,7 +1854,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Table Lamp
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1477279525172107456, guid: c38536f0af05de541bcd30236afe6d72, type: 3}
+    - {fileID: 6854116449487406320, guid: c38536f0af05de541bcd30236afe6d72, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c38536f0af05de541bcd30236afe6d72, type: 3}
 --- !u!4 &1811891186 stripped
 Transform:
@@ -2002,6 +1997,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6352219890138674677, guid: e957031badb353f44884ce0bb321c2a2, type: 3}
     - {fileID: 4363365036911720819, guid: e957031badb353f44884ce0bb321c2a2, type: 3}
+    - {fileID: 8189877396027884036, guid: e957031badb353f44884ce0bb321c2a2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e957031badb353f44884ce0bb321c2a2, type: 3}
 --- !u!4 &1872852148 stripped
 Transform:
@@ -2393,6 +2389,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8295845215904436659, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
     - {fileID: 4714604136263069271, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
+    - {fileID: 8780620519012102013, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
+    - {fileID: 1064659144083455361, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
+    - {fileID: 8146424637774899854, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0291aaffe4788f44093f251e3e5f74f8, type: 3}
 --- !u!4 &1643829560639908486 stripped
 Transform:

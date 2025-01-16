@@ -71,6 +71,7 @@ public class RenderPipelineManager : MonoBehaviour
         
         if (Screen.width != _prevWidth || Screen.height != _prevHeight)
         {
+            Debug.Log("Setting up rts");
             SetupRenderTextures();
         }
 
