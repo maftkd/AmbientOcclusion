@@ -75,8 +75,10 @@ Shader "Unlit/DeferredReplacement"
                 lightPos = mul(_ViewMatrix, float4(lightPos, 0)).xyz;
                 float lightDot = saturate(dot(lightPos, i.normal));
                 float shadowed = receivedShadow * (1 - lightDot);
-                shadowed *= 0.8;
-                o.albedo = _Color * (1 - shadowed) + shadowed * float4(0.1, 0.2, 0.3, 1.0);
+                //float shadowed = saturate(lightDot + receivedShadow);
+                //shadowed *= 1.0;
+                o.albedo = _Color * (1 - shadowed) + shadowed * float4(0.6, 0.8, 0.95, 1.0) * 0.5;
+                //o.albedo = shadowed;
                 o.normal = float4(i.normal, 1.0);
                 o.position = float4(i.viewPos, 1.0);
                 return o;
