@@ -75,5 +75,6 @@ public class RenderPipelineManager : MonoBehaviour
         }
 
         Shader.SetGlobalMatrix("_ProjectionMatrix", _cam.projectionMatrix);
+        Shader.SetGlobalMatrix("_ViewMatrix", _cam.worldToCameraMatrix);
     }
 }

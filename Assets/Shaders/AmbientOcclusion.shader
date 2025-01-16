@@ -83,7 +83,7 @@ Shader "Hidden/AmbientOcclusion"
 
                     //convert from view space back to a uv coordinate we can use to resample the position
                     coords = float4(samplePos, 1);
-                    coords = mul(_ViewMatrix, coords);
+                    //coords = mul(_ViewMatrix, coords);
                     coords = mul(_ProjectionMatrix, coords);
                     coords.xyz /= coords.w;
                     coords.xy = coords.xy * 0.5 + 0.5;

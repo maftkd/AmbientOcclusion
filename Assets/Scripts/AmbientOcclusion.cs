@@ -20,6 +20,9 @@ public class AmbientOcclusion : MonoBehaviour
     [Range(0, 8)]
     public int blurRadius;
 
+    private RenderTexture _blur;
+    private RenderTexture _ambientOcclusion;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -77,22 +80,35 @@ public class AmbientOcclusion : MonoBehaviour
             _blurMat = new Material(blurShader);
         }
         
+        
+        if(_blur == null || _blur.width != dest.width || _blur.height != dest.height)
+        {
+            if (_blur != null)
+            {
+                RenderTexture.ReleaseTemporary(_blur);
+            }
+            _blur = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
+        }
+        
+        if(_ambientOcclusion == null || _ambientOcclusion.width != dest.width || _ambientOcclusion.height != dest.height)
+        {
+            if (_ambientOcclusion != null)
+            {
+                RenderTexture.ReleaseTemporary(_ambientOcclusion);
+            }
+            _ambientOcclusion = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
+        }
+        
         _ambientOcclusionMat.SetFloat("_Radius", radius);
         _ambientOcclusionMat.SetFloat("_Bias", bias);
 
-        RenderTexture ambientOcclusion = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
-        _finalCompositeMat.SetTexture("_AmbientOcclusion", ambientOcclusion);
-        Graphics.Blit(null, ambientOcclusion, _ambientOcclusionMat);
-        
-        RenderTexture blur = RenderTexture.GetTemporary(dest.width, dest.height, 0, RenderTextureFormat.R8);
+        _finalCompositeMat.SetTexture("_AmbientOcclusion", _ambientOcclusion);
+        Graphics.Blit(null, _ambientOcclusion, _ambientOcclusionMat);
         
         _blurMat.SetFloat("_Radius", blurRadius);
-        Graphics.Blit(ambientOcclusion, blur, _blurMat, 0);
-        Graphics.Blit(blur, ambientOcclusion, _blurMat, 1);
+        Graphics.Blit(_ambientOcclusion, _blur, _blurMat, 0);
+        Graphics.Blit(_blur, _ambientOcclusion, _blurMat, 1);
         
         Graphics.Blit(null, dest, _finalCompositeMat);
-        
-        RenderTexture.ReleaseTemporary(blur);
-        RenderTexture.ReleaseTemporary(ambientOcclusion);
     }
 }

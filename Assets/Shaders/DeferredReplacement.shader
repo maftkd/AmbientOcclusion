@@ -6,7 +6,7 @@ Shader "Unlit/DeferredReplacement"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase" }
         LOD 100
 
         Pass
@@ -14,10 +14,10 @@ Shader "Unlit/DeferredReplacement"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
+            #pragma multi_compile_fwdbase
 
             #include "UnityCG.cginc"
+            #include "AutoLight.cginc"
 
             struct appdata
             {
@@ -29,10 +29,11 @@ Shader "Unlit/DeferredReplacement"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
-                float4 vertex : SV_POSITION;
-                float3 normal : TEXCOORD1;
-                float3 viewPos : TEXCOORD2;
+                LIGHTING_COORDS(1, 2)
+                float4 pos : SV_POSITION;
+                float3 normal : TEXCOORD3;
+                float3 viewPos : TEXCOORD4;
+                float3 worldPos : TEXCOORD5;
             };
 
             struct fragmentOutput
@@ -50,17 +51,25 @@ Shader "Unlit/DeferredReplacement"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = normalize(mul((float3x3)UNITY_MATRIX_MV, v.normal));
                 o.viewPos = UnityObjectToViewPos(v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }
 
             fragmentOutput frag (v2f i) : SV_Target
             {
                 fragmentOutput o;
-                o.albedo = _Color;
+                float receivedShadow = 1 - UNITY_SHADOW_ATTENUATION(i, i.worldPos);
+                receivedShadow *= 0.2;
+                if(i.worldPos.y < 0.01)
+                {
+                    //_Color = float4(1, 0, 0, 1);
+                }
+                o.albedo = _Color * (1 - receivedShadow);
                 o.normal = float4(i.normal, 1.0);
                 o.position = float4(i.viewPos, 1.0);
                 return o;
@@ -68,4 +77,5 @@ Shader "Unlit/DeferredReplacement"
             ENDCG
         }
     }
+    Fallback "Diffuse"
 }

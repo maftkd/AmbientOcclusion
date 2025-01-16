@@ -485,7 +485,7 @@ Camera:
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 2
+  m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
@@ -497,8 +497,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.099999994
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 100
   field of view: 26.991467
   orthographic: 0
   orthographic size: 0.0023994944
@@ -560,8 +560,8 @@ MonoBehaviour:
   finalComposite: {fileID: 4800000, guid: 0cf6e18f75e9a451ba48a12bdd5b0302, type: 3}
   ambientOcclusionShader: {fileID: 4800000, guid: e56e39b1869284ae8b3c944417928167, type: 3}
   blurShader: {fileID: 4800000, guid: bb1ff5673b9f04dd2a435f67fb310c3d, type: 3}
-  radius: 0.8
-  bias: 0.025
+  radius: 0.7
+  bias: 0
   blurRadius: 2
 --- !u!114 &354915521
 MonoBehaviour:
@@ -1095,7 +1095,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1233731057}
   - component: {fileID: 1233731056}
-  - component: {fileID: 1233731058}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1173,25 +1172,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1233731055}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: -50.4, y: 6.46, z: -37.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1233731058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233731055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1243155706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1888,6 +1875,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 243887764}
     m_Modifications:
+    - target: {fileID: 435352860056641279, guid: 943bb5fa6ac782143b7561037a737f5c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2508052830820077585, guid: 943bb5fa6ac782143b7561037a737f5c, type: 3}
       propertyPath: m_RootOrder
       value: 27
@@ -1935,6 +1926,10 @@ PrefabInstance:
     - target: {fileID: 2991995913880324779, guid: 943bb5fa6ac782143b7561037a737f5c, type: 3}
       propertyPath: m_Name
       value: Ceilling Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933338662485225159, guid: 943bb5fa6ac782143b7561037a737f5c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1536505067836444305, guid: 943bb5fa6ac782143b7561037a737f5c, type: 3}
