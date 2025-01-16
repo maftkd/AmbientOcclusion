@@ -69,7 +69,7 @@ Shader "Unlit/DeferredReplacement"
                 {
                     //_Color = float4(1, 0, 0, 1);
                 }
-                o.albedo = lerp(_Color, float4(0.9, 0.9, 1.0, 1.0) * _Color * 0.8,receivedShadow);
+                o.albedo = lerp(_Color, float4(0.9, 0.95, 1.0, 1.0) * _Color * 0.8,receivedShadow);
                 o.normal = float4(i.normal, 1.0);
                 o.position = float4(i.viewPos, 1.0);
                 return o;
