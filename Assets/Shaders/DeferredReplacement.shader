@@ -46,6 +46,7 @@ Shader "Unlit/DeferredReplacement"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+            float4x4 _ViewMatrix;
 
             
             v2f vert (appdata v)
@@ -69,7 +70,13 @@ Shader "Unlit/DeferredReplacement"
                 {
                     //_Color = float4(1, 0, 0, 1);
                 }
-                o.albedo = lerp(_Color, float4(0.9, 0.95, 1.0, 1.0) * _Color * 0.8,receivedShadow);
+                
+                float3 lightPos = _WorldSpaceLightPos0.xyz;
+                lightPos = mul(_ViewMatrix, float4(lightPos, 0)).xyz;
+                float lightDot = saturate(dot(lightPos, i.normal));
+                float shadowed = receivedShadow * (1 - lightDot);
+                shadowed *= 0.8;
+                o.albedo = _Color * (1 - shadowed) + shadowed * float4(0.1, 0.2, 0.3, 1.0);
                 o.normal = float4(i.normal, 1.0);
                 o.position = float4(i.viewPos, 1.0);
                 return o;
